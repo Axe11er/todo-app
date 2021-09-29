@@ -4,68 +4,74 @@ import PropTypes from 'prop-types';
 import './TaskFilter.css';
 
 class TaskFilter extends Component {
-   static defaultProps = {
-      showActive: () => {},
-      showCompleted: () => {},
-      showAll: () => {},
-   };
+  static defaultProps = {
+    showActive: () => {},
+    showCompleted: () => {},
+    showAll: () => {},
+  };
 
-   static propTypes = {
-      showActive: PropTypes.func,
-      showCompleted: PropTypes.func,
-      showAll: PropTypes.func,
-   };
+  static propTypes = {
+    showActive: PropTypes.func,
+    showCompleted: PropTypes.func,
+    showAll: PropTypes.func,
+  };
 
-   state = {
-      selected: 'all',
-   };
+  state = {
+    selected: 'all',
+  };
 
-   toggleSelected = e => {
-      this.setState(() => {
-         if (e.target.id === 'all') return { selected: 'all' };
-         if (e.target.id === 'active') return { selected: 'active' };
-         if (e.target.id === 'completed') return { selected: 'completed' };
-      });
-   };
+  toggleSelected = (evt) => {
+    if (evt.target.id === 'all') this.setState({ selected: 'all' });
+    if (evt.target.id === 'active') this.setState({ selected: 'active' });
+    if (evt.target.id === 'completed') this.setState({ selected: 'completed' });
+  };
 
-   render() {
-      const { showActive, showCompleted, showAll } = this.props;
-      const { selected } = this.state;
+  toggleAll = () => {
+    this.props.showAll();
+    this.setState({ selected: 'all' });
+  };
 
-      let allClassNames = '';
-      let activeClassNames = '';
-      let completedClassNames = '';
+  toggleActive = () => {
+    this.props.showActive();
+    this.setState({ selected: 'active' });
+  };
 
-      if (selected === 'all') allClassNames += 'selected';
-      if (selected === 'active') activeClassNames += 'selected';
-      if (selected === 'completed') completedClassNames += 'selected';
+  toggleCompleted = () => {
+    this.props.showCompleted();
+    this.setState({ selected: 'completed' });
+  };
 
-      return (
-         <ul className="filters" onClick={this.toggleSelected}>
-            <li>
-               <button className={allClassNames} id="all" onClick={showAll}>
-                  All
-               </button>
-            </li>
-            <li>
-               <button
-                  className={activeClassNames}
-                  id="active"
-                  onClick={showActive}>
-                  Active
-               </button>
-            </li>
-            <li>
-               <button
-                  className={completedClassNames}
-                  id="completed"
-                  onClick={showCompleted}>
-                  Completed
-               </button>
-            </li>
-         </ul>
-      );
-   }
+  render() {
+    const { selected } = this.state;
+
+    let allClassNames = '';
+    let activeClassNames = '';
+    let completedClassNames = '';
+
+    if (selected === 'all') allClassNames += 'selected';
+    if (selected === 'active') activeClassNames += 'selected';
+    if (selected === 'completed') completedClassNames += 'selected';
+
+    return (
+      <ul className="filters">
+        <li>
+          <button type="button" className={allClassNames} id="all" onClick={this.toggleAll}>
+            All
+          </button>
+        </li>
+        <li>
+          <button type="button" className={activeClassNames} id="active" onClick={this.toggleActive}>
+            Active
+          </button>
+        </li>
+        <li>
+          <button type="button" className={completedClassNames} id="completed" onClick={this.toggleCompleted}>
+            Completed
+          </button>
+        </li>
+      </ul>
+    );
+  }
 }
 
 export default TaskFilter;
