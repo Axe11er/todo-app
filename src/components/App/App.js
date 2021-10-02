@@ -10,7 +10,6 @@ export default class App extends Component {
   state = {
     data: [],
     filter: 'all',
-    setFilter: 'all',
     newTaskLabel: '',
   };
 
@@ -65,31 +64,16 @@ export default class App extends Component {
     this.setState({ newTaskLabel: '' });
   };
 
-  showAll = () => this.setState({ filter: 'all' });
-
-  showActive = () => this.setState({ filter: 'active' });
-
-  showCompleted = () => this.setState({ filter: 'completed' });
-
-  toggleSelected = (evt) => {
-    if (evt.target.id === 'all') this.setState({ setFilter: 'all' });
-    if (evt.target.id === 'active') this.setState({ setFilter: 'active' });
-    if (evt.target.id === 'completed') this.setState({ setFilter: 'completed' });
-  };
-
   toggleAll = () => {
-    this.showAll();
-    this.setState({ setFilter: 'all' });
+    this.setState({ filter: 'all' });
   };
 
   toggleActive = () => {
-    this.showActive();
-    this.setState({ setFilter: 'active' });
+    this.setState({ filter: 'active' });
   };
 
   toggleCompleted = () => {
-    this.showCompleted();
-    this.setState({ setFilter: 'completed' });
+    this.setState({ filter: 'completed' });
   };
 
   createTodoItem(label) {
@@ -106,7 +90,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { data, filter, setFilter, editedLabel, newTaskLabel } = this.state;
+    const { data, filter, editedLabel, newTaskLabel } = this.state;
     const todoCount = data.reduce((count, task) => (task.completed !== true ? (count += 1) : count), 0);
 
     return (
@@ -129,11 +113,8 @@ export default class App extends Component {
         />
         <Footer
           todoCount={todoCount}
-          setFilter={setFilter}
+          setFilter={filter}
           clearCompleted={this.clearCompleted}
-          showActive={this.showActive}
-          showCompleted={this.showCompleted}
-          showAll={this.showAll}
           toggleAll={this.toggleAll}
           toggleActive={this.toggleActive}
           toggleCompleted={this.toggleCompleted}
