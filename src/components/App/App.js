@@ -27,7 +27,7 @@ export default class App extends Component {
   editItem = (id, text) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
-      const editedItem = this.findIdx(dataCopy, id);
+      const editedItem = this.findIdx(data, id);
       dataCopy[editedItem].label = text;
       return { data: dataCopy };
     });
@@ -36,7 +36,7 @@ export default class App extends Component {
   deleteItem = (id) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
-      const deletedItem = this.findIdx(dataCopy, id);
+      const deletedItem = this.findIdx(data, id);
       dataCopy.splice(deletedItem, 1);
       return { data: dataCopy };
     });
