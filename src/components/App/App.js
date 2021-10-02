@@ -24,20 +24,13 @@ export default class App extends Component {
     }
   };
 
+  deleteItem = (id) => this.setState(({ data }) => ({ data: data.filter((item) => item.id !== id) }));
+
   editItem = (id, text) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
       const editedItem = this.findIdx(data, id);
       dataCopy[editedItem].label = text;
-      return { data: dataCopy };
-    });
-  };
-
-  deleteItem = (id) => {
-    this.setState(({ data }) => {
-      const dataCopy = this.copyData(data);
-      const deletedItem = this.findIdx(data, id);
-      dataCopy.splice(deletedItem, 1);
       return { data: dataCopy };
     });
   };
@@ -51,14 +44,6 @@ export default class App extends Component {
     });
   };
 
-  onNewTaskPrint = (evt) => this.setState({ newTaskLabel: evt.target.value });
-
-  onNewTaskSubmit = (evt) => {
-    evt.preventDefault();
-    this.addItem(this.state.newTaskLabel.trim());
-    this.setState({ newTaskLabel: '' });
-  };
-
   completedToggle = (id) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
@@ -70,6 +55,14 @@ export default class App extends Component {
 
   clearCompleted = () => {
     this.setState(({ data }) => ({ data: data.filter((item) => !item.completed) }));
+  };
+
+  onNewTaskPrint = (evt) => this.setState({ newTaskLabel: evt.target.value });
+
+  onNewTaskSubmit = (evt) => {
+    evt.preventDefault();
+    this.addItem(this.state.newTaskLabel.trim());
+    this.setState({ newTaskLabel: '' });
   };
 
   showAll = () => this.setState({ filter: 'all' });
