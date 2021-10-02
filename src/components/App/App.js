@@ -8,7 +8,7 @@ import './App.css';
 
 export default class App extends Component {
   state = {
-    data: [],
+    data: JSON.parse(localStorage.getItem('data')) || [],
     filter: 'all',
     newTaskLabel: '',
   };
@@ -90,6 +90,8 @@ export default class App extends Component {
   }
 
   render() {
+    localStorage.setItem('data', JSON.stringify(this.state.data));
+   
     const { data, filter, editedLabel, newTaskLabel } = this.state;
     const todoCount = data.reduce((count, task) => (task.completed !== true ? (count += 1) : count), 0);
 
