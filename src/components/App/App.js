@@ -7,15 +7,11 @@ import Footer from '../Footer';
 import './App.css';
 
 export default class App extends Component {
-  id = 0;
-
   state = {
-    data: [
-      this.createTodoItem('Drink Coffee'),
-      this.createTodoItem('Learn React'),
-      this.createTodoItem('Make Awesome App'),
-    ],
+    data: [],
     filter: 'all',
+    setFilter: 'all',
+    newTaskLabel: '',
   };
 
   copyData = (arr) => JSON.parse(JSON.stringify(arr));
@@ -23,17 +19,15 @@ export default class App extends Component {
   findIdx = (arr, id) => arr.findIndex((item) => item.id === id);
 
   addItem = (text) => {
-    this.setState(({ data }) => {
-      const dataCopy = this.copyData(data);
-      dataCopy.push(this.createTodoItem(text));
-      return { data: dataCopy };
-    });
+    if (text) {
+      this.setState(({ data }) => ({ data: [...data, this.createTodoItem(text)] }));
+    }
   };
 
   editItem = (id, text) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
-      const editedItem = this.findIdx(dataCopy, id);
+      const editedItem = this.findIdx(data, id);
       dataCopy[editedItem].label = text;
       return { data: dataCopy };
     });
@@ -42,7 +36,7 @@ export default class App extends Component {
   deleteItem = (id) => {
     this.setState(({ data }) => {
       const dataCopy = this.copyData(data);
-      const deletedItem = this.findIdx(dataCopy, id);
+      const deletedItem = this.findIdx(data, id);
       dataCopy.splice(deletedItem, 1);
       return { data: dataCopy };
     });
@@ -55,6 +49,14 @@ export default class App extends Component {
       dataCopy[editedItem].editing = !dataCopy[editedItem].editing;
       return { data: dataCopy };
     });
+  };
+
+  onNewTaskPrint = (evt) => this.setState({ newTaskLabel: evt.target.value });
+
+  onNewTaskSubmit = (evt) => {
+    evt.preventDefault();
+    this.addItem(this.state.newTaskLabel.trim());
+    this.setState({ newTaskLabel: '' });
   };
 
   completedToggle = (id) => {
@@ -76,10 +78,31 @@ export default class App extends Component {
 
   showCompleted = () => this.setState({ filter: 'completed' });
 
+  toggleSelected = (evt) => {
+    if (evt.target.id === 'all') this.setState({ setFilter: 'all' });
+    if (evt.target.id === 'active') this.setState({ setFilter: 'active' });
+    if (evt.target.id === 'completed') this.setState({ setFilter: 'completed' });
+  };
+
+  toggleAll = () => {
+    this.showAll();
+    this.setState({ setFilter: 'all' });
+  };
+
+  toggleActive = () => {
+    this.showActive();
+    this.setState({ setFilter: 'active' });
+  };
+
+  toggleCompleted = () => {
+    this.showCompleted();
+    this.setState({ setFilter: 'completed' });
+  };
+
   createTodoItem(label) {
     return {
       label,
-      id: this.id++,
+      id: Date.now(),
       completed: false,
       editing: false,
       created: `created ${formatDistanceToNow(new Date(), {
@@ -90,16 +113,21 @@ export default class App extends Component {
   }
 
   render() {
-    const { data, filter } = this.state;
-    const doneCount = this.state.data.filter((item) => item.completed);
-    const todoCount = this.state.data.length - doneCount.length;
+    const { data, filter, setFilter, editedLabel, newTaskLabel } = this.state;
+    const todoCount = data.reduce((count, task) => (task.completed !== true ? (count += 1) : count), 0);
 
     return (
       <section className="todoapp">
-        <AppHeader onAdded={this.addItem} />
+        <AppHeader
+          newTaskLabel={newTaskLabel}
+          onAdded={this.addItem}
+          onNewTaskPrint={this.onNewTaskPrint}
+          onSubmit={this.onNewTaskSubmit}
+        />
         <TaskList
           todos={data}
           filter={filter}
+          editedLabel={editedLabel}
           onDeleted={this.deleteItem}
           onEditingToggle={this.editingToggle}
           onCompletedToggle={this.completedToggle}
@@ -108,10 +136,14 @@ export default class App extends Component {
         />
         <Footer
           todoCount={todoCount}
+          setFilter={setFilter}
           clearCompleted={this.clearCompleted}
           showActive={this.showActive}
           showCompleted={this.showCompleted}
           showAll={this.showAll}
+          toggleAll={this.toggleAll}
+          toggleActive={this.toggleActive}
+          toggleCompleted={this.toggleCompleted}
         />
       </section>
     );
