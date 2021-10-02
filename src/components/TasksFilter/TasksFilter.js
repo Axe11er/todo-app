@@ -1,77 +1,60 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import './TaskFilter.css';
 
-class TaskFilter extends Component {
-  static defaultProps = {
-    showActive: () => {},
-    showCompleted: () => {},
-    showAll: () => {},
-  };
+const TasksFilter = ({ setFilter, toggleAll, toggleActive, toggleCompleted }) => {
+  let allClassNames = '';
+  let activeClassNames = '';
+  let completedClassNames = '';
 
-  static propTypes = {
-    showActive: PropTypes.func,
-    showCompleted: PropTypes.func,
-    showAll: PropTypes.func,
-  };
+  switch (setFilter) {
+    case 'all':
+      allClassNames += 'selected';
+      break;
+    case 'active':
+      activeClassNames += 'selected';
+      break;
+    case 'completed':
+      completedClassNames += 'selected';
+      break;
 
-  state = {
-    selected: 'all',
-  };
-
-  toggleSelected = (evt) => {
-    if (evt.target.id === 'all') this.setState({ selected: 'all' });
-    if (evt.target.id === 'active') this.setState({ selected: 'active' });
-    if (evt.target.id === 'completed') this.setState({ selected: 'completed' });
-  };
-
-  toggleAll = () => {
-    this.props.showAll();
-    this.setState({ selected: 'all' });
-  };
-
-  toggleActive = () => {
-    this.props.showActive();
-    this.setState({ selected: 'active' });
-  };
-
-  toggleCompleted = () => {
-    this.props.showCompleted();
-    this.setState({ selected: 'completed' });
-  };
-
-  render() {
-    const { selected } = this.state;
-
-    let allClassNames = '';
-    let activeClassNames = '';
-    let completedClassNames = '';
-
-    if (selected === 'all') allClassNames += 'selected';
-    if (selected === 'active') activeClassNames += 'selected';
-    if (selected === 'completed') completedClassNames += 'selected';
-
-    return (
-      <ul className="filters">
-        <li>
-          <button type="button" className={allClassNames} id="all" onClick={this.toggleAll}>
-            All
-          </button>
-        </li>
-        <li>
-          <button type="button" className={activeClassNames} id="active" onClick={this.toggleActive}>
-            Active
-          </button>
-        </li>
-        <li>
-          <button type="button" className={completedClassNames} id="completed" onClick={this.toggleCompleted}>
-            Completed
-          </button>
-        </li>
-      </ul>
-    );
+    default:
+      break;
   }
-}
+  return (
+    <ul className="filters">
+      <li>
+        <button type="button" className={allClassNames} id="all" onClick={toggleAll}>
+          All
+        </button>
+      </li>
+      <li>
+        <button type="button" className={activeClassNames} id="active" onClick={toggleActive}>
+          Active
+        </button>
+      </li>
+      <li>
+        <button type="button" className={completedClassNames} id="completed" onClick={toggleCompleted}>
+          Completed
+        </button>
+      </li>
+    </ul>
+  );
+};
 
-export default TaskFilter;
+export default TasksFilter;
+
+TasksFilter.defaultProps = {
+  setFilter: 'all',
+  toggleAll: () => {},
+  toggleActive: () => {},
+  toggleCompleted: () => {},
+};
+
+TasksFilter.propTypes = {
+  setFilter: PropTypes.string,
+  toggleAll: PropTypes.func,
+  toggleActive: PropTypes.func,
+  toggleCompleted: PropTypes.func,
+};

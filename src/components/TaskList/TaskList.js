@@ -4,11 +4,21 @@ import Task from '../Task';
 
 import './TaskList.css';
 
-const TaskList = ({ todos, filter, onDeleted, onEditingToggle, onEditedItem, onCompletedToggle, onAdded }) => {
+const TaskList = ({
+  todos,
+  editedLabel,
+  filter,
+  onDeleted,
+  onEditingToggle,
+  onEditedItem,
+  onCompletedToggle,
+  onAdded,
+}) => {
   const tasksToRender = (item) => (
     <Task
       key={item.id}
       {...item}
+      editedLabel={editedLabel}
       onDeleted={() => onDeleted(item.id)}
       onEditingToggle={() => onEditingToggle(item.id)}
       onEditedItem={onEditedItem}
@@ -36,6 +46,7 @@ const TaskList = ({ todos, filter, onDeleted, onEditingToggle, onEditedItem, onC
 
 TaskList.defaultProps = {
   todos: [],
+  editedLabel: '',
   filter: 'all',
   onDeleted: () => {},
   onEditingToggle: () => {},
@@ -46,6 +57,7 @@ TaskList.defaultProps = {
 
 TaskList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.object),
+  editedLabel: PropTypes.string,
   filter: PropTypes.string,
   onDeleted: PropTypes.func,
   onEditingToggle: PropTypes.func,
