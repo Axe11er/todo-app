@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+// import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import AppHeader from '../AppHeader';
 import TaskList from '../TaskList';
 import Footer from '../Footer';
@@ -82,16 +82,17 @@ export default class App extends Component {
       id: Date.now(),
       completed: false,
       editing: false,
-      created: `created ${formatDistanceToNow(new Date(), {
-        includeSeconds: true,
-        addSuffix: true,
-      })}`,
+      // created: `created ${formatDistanceToNow(new Date(), {
+      //   includeSeconds: true,
+      //   addSuffix: true,
+      // })}`,
+      created: new Date().toLocaleString(),
     };
   }
 
   render() {
     localStorage.setItem('data', JSON.stringify(this.state.data));
-   
+
     const { data, filter, editedLabel, newTaskLabel } = this.state;
     const todoCount = data.reduce((count, task) => (task.completed !== true ? (count += 1) : count), 0);
 

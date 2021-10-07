@@ -9,17 +9,15 @@ const TasksFilter = ({ setFilter, toggleAll, toggleActive, toggleCompleted }) =>
   let completedClassNames = '';
 
   switch (setFilter) {
-    case 'all':
-      allClassNames += 'selected';
-      break;
     case 'active':
       activeClassNames += 'selected';
       break;
     case 'completed':
       completedClassNames += 'selected';
       break;
-
+      
     default:
+      allClassNames += 'selected';
       break;
   }
   return (

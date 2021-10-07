@@ -7,7 +7,7 @@ const NewTaskForm = ({ newTaskLabel, onNewTaskPrint, onSubmit }) => (
     <input className="new-todo" placeholder="What needs to be done?" value={newTaskLabel} onChange={onNewTaskPrint} />
   </form>
 );
-// {editedLabel}
+
 NewTaskForm.defaultProps = {
   newTaskLabel: '',
   onNewTaskPrint: () => {},
