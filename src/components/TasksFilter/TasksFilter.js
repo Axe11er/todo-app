@@ -3,55 +3,39 @@ import PropTypes from 'prop-types';
 
 import './TaskFilter.css';
 
-const TasksFilter = ({ setFilter, toggleAll, toggleActive, toggleCompleted }) => {
-  let allClassNames = '';
-  let activeClassNames = '';
-  let completedClassNames = '';
+const TasksFilter = ({ filter, toggleAll, toggleActive, toggleCompleted }) => {
+  const buttons = [
+    <li key="all">
+      <button type="button" className={filter === 'all' ? 'selected' : null} onClick={toggleAll}>
+        All
+      </button>
+    </li>,
+    <li key="active">
+      <button type="button" className={filter === 'active' ? 'selected' : null} onClick={toggleActive}>
+        Active
+      </button>
+    </li>,
+    <li key="completed">
+      <button type="button" className={filter === 'completed' ? 'selected' : null} onClick={toggleCompleted}>
+        Completed
+      </button>
+    </li>,
+  ];
 
-  switch (setFilter) {
-    case 'active':
-      activeClassNames += 'selected';
-      break;
-    case 'completed':
-      completedClassNames += 'selected';
-      break;
-      
-    default:
-      allClassNames += 'selected';
-      break;
-  }
-  return (
-    <ul className="filters">
-      <li>
-        <button type="button" className={allClassNames} id="all" onClick={toggleAll}>
-          All
-        </button>
-      </li>
-      <li>
-        <button type="button" className={activeClassNames} id="active" onClick={toggleActive}>
-          Active
-        </button>
-      </li>
-      <li>
-        <button type="button" className={completedClassNames} id="completed" onClick={toggleCompleted}>
-          Completed
-        </button>
-      </li>
-    </ul>
-  );
+  return <ul className="filters">{buttons}</ul>;
 };
 
 export default TasksFilter;
 
 TasksFilter.defaultProps = {
-  setFilter: 'all',
+  filter: 'all',
   toggleAll: () => {},
   toggleActive: () => {},
   toggleCompleted: () => {},
 };
 
 TasksFilter.propTypes = {
-  setFilter: PropTypes.string,
+  filter: PropTypes.string,
   toggleAll: PropTypes.func,
   toggleActive: PropTypes.func,
   toggleCompleted: PropTypes.func,

@@ -1,0 +1,27 @@
+.timer-controls {
+   display: flex;
+   align-items: center;
+}
+
+.icon-pause,
+.icon-play {
+   font-size: 18px;
+   width: 18px;
+   height: 18px;
+}
+
+.icon-pause {
+   margin-right: 15px;
+}
+
+.icon-pause:after {
+   content: '⏸';
+}
+
+.icon-play:after {
+   content: '▶';
+}
+
+.timer-value {
+   font-size: 12px;
+}

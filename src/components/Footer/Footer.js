@@ -6,7 +6,7 @@ import './Footer.css';
 
 const Footer = ({
   todoCount,
-  setFilter,
+  filter,
   clearCompleted,
   toggleAll,
   toggleActive,
@@ -15,7 +15,7 @@ const Footer = ({
   <footer className="footer">
     <span className="todo-count">{todoCount} items left</span>
     <TaskFilter
-      setFilter={setFilter}
+      filter={filter}
       toggleAll={toggleAll}
       toggleActive={toggleActive}
       toggleCompleted={toggleCompleted}
@@ -28,7 +28,7 @@ const Footer = ({
 
 Footer.defaultProps = {
   todoCount: 0,
-  setFilter: 'all',
+  filter: 'all',
   clearCompleted: () => {},
   toggleAll: () => {},
   toggleActive: () => {},
@@ -37,7 +37,7 @@ Footer.defaultProps = {
 
 Footer.propTypes = {
   todoCount: PropTypes.number,
-  setFilter: PropTypes.string,
+  filter: PropTypes.string,
   clearCompleted: PropTypes.func,
   toggleAll: PropTypes.func,
   toggleActive: PropTypes.func,
