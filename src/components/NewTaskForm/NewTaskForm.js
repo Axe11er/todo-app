@@ -1,23 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './NewTaskForm.css';
 
-const NewTaskForm = ({ newTaskLabel, onNewTaskPrint, onSubmit }) => (
-  <form onSubmit={onSubmit}>
-    <input className="new-todo" placeholder="What needs to be done?" value={newTaskLabel} onChange={onNewTaskPrint} />
-  </form>
-);
+const NewTaskForm = ({ onAddItem }) => {
+   const [label, setLabel] = useState('');
+
+   const onSubmit = evt => {
+      evt.preventDefault();
+      onAddItem(label.trim());
+      setLabel('');
+   };
+
+   return (
+      <form onSubmit={onSubmit}>
+         <input
+            className="new-todo"
+            placeholder="What needs to be done?"
+            value={label}
+            onChange={evt => setLabel(evt.target.value)}
+         />
+      </form>
+   );
+};
 
 NewTaskForm.defaultProps = {
-  newTaskLabel: '',
-  onNewTaskPrint: () => {},
-  onSubmit: () => {},
+   onAddItem: () => {},
 };
 
 NewTaskForm.propTypes = {
-  newTaskLabel: PropTypes.string,
-  onNewTaskPrint: PropTypes.func,
-  onSubmit: PropTypes.func,
+   onAddItem: PropTypes.func,
 };
 
 export default NewTaskForm;
